@@ -1,0 +1,73 @@
+type Chat {
+  id:        ID!       
+  subject:     String
+  published: Boolean!  
+  author:    User!     
+  members:   [User!]!
+  messages:  [Message!]!
+  createdAt: String!  
+  updatedAt: String!  
+}
+input ChatCreateInput {
+  subject:     String
+  published: Boolean!  
+  author:    UserWhereUniqueInput!     
+  members:   [UserWhereUniqueInput!]!
+  messages:  [MessageWhereUniqueInput]
+}
+input ChatUpdateDataInput {
+  subject:     String
+  published: Boolean  
+  author:    UserUpdateOneInput     
+  members:   [UserUpdateOneInput]
+  messages:  [MessageUpdateOneInput]
+}
+input ChatUpdateOneInput {
+  create: ChatCreateInput
+  update: ChatUpdateDataInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ChatWhereUniqueInput
+}
+input ChatWhereUniqueInput {
+  id: ID!
+}
+
+type Message {
+  id:          ID!      
+  published:   Boolean!   
+  isReply:     Boolean!  
+  body: String!
+  author:      User!      
+  replies:     [Message!]
+  attachments: [File!]!
+  createdAt:   String!  
+  updatedAt:   String!
+}
+
+input MessageCreateInput {
+  published:   Boolean!   
+  isReply:     Boolean!  
+  body: String!
+  author:      UserWhereUniqueInput     
+  replies:     [MessageWhereUniqueInput]
+  attachments: [FileWhereUniqueInput]
+}
+input MessageUpdateDataInput {
+  published:   Boolean   
+  isReply:     Boolean 
+  body: String
+  author:      UserUpdateOneInput     
+  replies:     [MessageUpdateOneInput]
+  attachments: [FileUpdateOneInput]
+}
+input MessageUpdateOneInput {
+  create: MessageCreateInput
+  update: MessageUpdateDataInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: MessageWhereUniqueInput
+}
+input MessageWhereUniqueInput {
+  id: ID!
+}

@@ -1,0 +1,22 @@
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+  ORGANIZATION
+}
+
+enum State {
+  PENDING
+  REVIEW
+  REJECTED
+  APPROVED
+  COMPLETED
+  ARCHIVED
+}
+
+input InInput{
+    in:[Int!]!
+}
+input WhereInput{
+    id: ID!
+}

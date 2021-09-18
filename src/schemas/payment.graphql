@@ -1,0 +1,100 @@
+type Order {
+  id:        ID!     
+  item:      Bid!     
+  tokens:    Int!     
+  state:     State!   
+  createdAt: String! 
+  updatedAt: String! 
+}
+ input OrderCreateInput {
+  item:      BidWhereUniqueInput    
+  tokens:    Int!     
+  state:     State 
+}
+ input OrderUpdateDataInput {
+  item:      BidUpdateOneInput    
+  tokens:    Int     
+  state:     State 
+}
+input OrderUpdateOneInput {
+  create: OrderCreateInput
+  update: OrderUpdateDataInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: OrderWhereUniqueInput
+}
+input OrderWhereUniqueInput {
+  id: ID!
+}
+
+type TokenOrder {
+  id:            ID!        
+  owner:         User!        
+  transaction:   Transaction!
+  tokens:        Int!        
+  state:         State!      
+  updatedAt:     String!    
+  createdAt:     String!    
+}
+input TokenOrderCreateInput {
+  owner:         UserWhereUniqueInput!        
+  transaction:   TransactionWhereUniqueInput
+  tokens:        Int!        
+  state:         State   
+}
+input TokenOrderUpdateDataInput {
+  owner:         UserUpdateOneInput        
+  transaction:   TransactionUpdateOneInput
+  tokens:        Int       
+  state:         State   
+}
+input TokenOrderUpdateOneInput {
+  create: TokenOrderCreateInput
+  update: TokenOrderUpdateDataInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: TokenOrderWhereUniqueInput
+}
+input TokenOrderWhereUniqueInput {
+  id: ID!
+}
+
+type Transaction {
+  id:                 ID!       
+  state:              State!     
+  externalTransRefId: String
+  transRefId:         String!
+  TokenOrder:         TokenOrder
+  amount:             Float!
+  updatedAt:          String!   
+  createdAt:          String!   
+  
+}
+
+input TransactionCreateInput {
+  state:              State!     
+  externalTransRefId: String
+  transRefId:         String!
+  amount:             Float!
+  TokenOrder:         TokenOrderWhereUniqueInput
+}
+
+input TransactionUpdateDataInput {
+  state:              State     
+  externalTransRefId: String
+  transRefId:         String
+  amount:             Float
+  TokenOrder:         TokenOrderUpdateOneInput
+}
+input TransactionUpdateOneInput {
+  create: TransactionCreateInput
+  update: TransactionUpdateDataInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: TransactionWhereUniqueInput
+}
+input TransactionWhereUniqueInput {
+  id: ID
+  externalTransRefId: String
+  transRefId: String
+}

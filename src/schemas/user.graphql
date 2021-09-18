@@ -1,0 +1,74 @@
+type User {
+  id:          Int  
+  uid:         ID!       
+  email:       String!       
+  displayName: String!
+  phoneNumber: String
+  emailVerified: Boolean!
+  disabled: Boolean!
+  avator:      File         
+  role:        Role!        
+  expertise:   [Expertise!]!
+  jobs:         [Job!]!
+  bids:         [Bid!]!
+  chats:        [Chat!]!
+  TokenOrder:   [TokenOrder!]!
+  createdAt:    String!     
+  updatedAt:    String!     
+ 
+}
+input AuthInput{
+    email: String!
+    password: String!
+    displayName: String
+}
+type AuthResult{
+    token: String
+    error: String
+    message: String
+    user: User 
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  email: String
+  uid: String
+}
+
+
+input UserUpdateDataInput{
+       
+  email:       String       
+  displayName: String
+  phoneNumber: String
+  emailVerified: Boolean
+  disabled: Boolean
+
+  avator:     FileUpdateOneInput 
+  role:        Role       
+  expertise:   [ExpertiseUpdateOneInput]
+  jobs:         [JobUpdateOneInput]
+  bids:         [BidUpdateOneInput]
+  chats:        [ChatUpdateOneInput]
+  TokenOrder:   [TokenOrderUpdateOneInput]
+}
+input UserUpdateOneInput {
+  # create: UserCreateInput
+  update: UserUpdateDataInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+
+extend type Query{
+    me:User
+}
+extend type Mutation{
+    signup(credentials: AuthInput):AuthResult!
+    signin(credentials: AuthInput):AuthResult!
+    editProfile(data: UserUpdateDataInput):User
+}
+extend type Subscription{
+    message(userId: ID!): Message
+}

@@ -1,0 +1,54 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateEnum",
+      "enum": "Role",
+      "createdValues": [
+        "MODERATOR",
+        "ORGANIZATION"
+      ]
+    },
+    {
+      "tag": "CreateField",
+      "model": "Chat",
+      "field": "subject",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Chat",
+      "field": "title"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Message",
+      "field": "body",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Transaction",
+          "field": "externalTransRefId"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Transaction",
+          "field": "transRefId"
+        },
+        "directive": "unique"
+      }
+    }
+  ]
+}

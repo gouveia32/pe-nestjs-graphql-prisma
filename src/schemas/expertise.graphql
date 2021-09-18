@@ -1,0 +1,31 @@
+type Expertise {
+  id:        ID!     
+  name:      String!
+  weight:    Int!
+  picture:   File
+  jobs:      [Job!]!   
+  users:      [User!]!
+  createdAt: String!
+  updatedAt: String!
+}
+input ExpertiseCreateInput {
+  name:      String!
+  weight:    Int!
+  picture:   FileWhereUniqueInput
+}
+input ExpertiseUpdateDataInput {
+  name:      String
+  weight:    Int
+  picture:   FileUpdateOneInput
+}
+input ExpertiseUpdateOneInput {
+  create: ExpertiseCreateInput
+  update: ExpertiseUpdateDataInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ExpertiseWhereUniqueInput
+}
+input ExpertiseWhereUniqueInput {
+  id: ID
+  name: String
+}

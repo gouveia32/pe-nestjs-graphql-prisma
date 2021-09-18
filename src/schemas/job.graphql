@@ -1,0 +1,40 @@
+type Job {
+  id:          ID!        
+  title:       String!
+  timeflame:   Int!
+  body:        String!
+  attachments: [File]
+  expertise:   [Expertise!]! 
+  author:      User!        
+  Bids:        [Bid!]!
+  createdAt:   String!    
+  updatedAt:   String!    
+}
+input JobCreateInput {
+  title:       String!
+  timeflame:   Int!
+  body:        String!
+  attachments: [FileWhereUniqueInput]
+  expertise:   [ExpertiseWhereUniqueInput]
+  author:      UserWhereUniqueInput       
+  Bids:        [BidWhereUniqueInput]
+}
+input JobUpdateDataInput {
+  title:       String
+  timeflame:   Int
+  body:        String
+  attachments: [FileUpdateOneInput]
+  expertise:   [ExpertiseUpdateOneInput]
+  author:      UserUpdateOneInput       
+  Bids:        [BidUpdateOneInput]
+}
+input JobUpdateOneInput {
+  create: JobCreateInput
+  update: JobUpdateDataInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: JobWhereUniqueInput
+}
+input JobWhereUniqueInput {
+  id: ID!
+}

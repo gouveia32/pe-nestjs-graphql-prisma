@@ -1,0 +1,44 @@
+
+type Bid {
+  id:          ID!     
+  amount:      Int!
+  timeflame:   Int!
+  message:     String
+  attachments: [File!]!
+  order:       Order!
+  state:       State!   
+  job:         Job!      
+  author:      User!     
+  createdAt:   String! 
+  updatedAt:   String! 
+}
+input BidCreateInput {
+  amount:      Int!
+  timeflame:   Int!
+  message:     String
+  attachments: [FileWhereUniqueInput]
+  order:       OrderWhereUniqueInput
+  state:       State!   
+  job:         JobWhereUniqueInput!      
+  author:      UserWhereUniqueInput!
+}
+input BidUpdateDataInput {
+  amount:      Int
+  timeflame:   Int
+  message:     String
+  attachments: [FileUpdateOneInput]
+  order:       OrderUpdateOneInput
+  state:       State   
+  job:         JobUpdateOneInput      
+  author:      UserUpdateOneInput
+}
+input BidUpdateOneInput {
+  create: BidCreateInput
+  update: BidUpdateDataInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: BidWhereUniqueInput
+}
+input BidWhereUniqueInput {
+  id: ID
+}

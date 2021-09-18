@@ -1,0 +1,170 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           Int          @default(autoincrement()) @id
+  uid          String       @unique
+  email        String       @unique
+  name         String
+  passwordHash String
+  avator       File         @relation(fields: [avatorId], references: [id])
+  avatorId     Int
+  role         Role         @default(USER)
+  expertise    Expertise[]
+  jobs         Job[]
+  bids         Bid[]
+  chats        Chat[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  Chat         Chat[]       @relation("chat_author")
+  Message      Message[]
+  TokenOrder   TokenOrder[]
+}
+
+model Expertise {
+  id        Int      @default(autoincrement()) @id
+  name      String
+  weight    Int
+  picture   File     @relation(fields: [pictureId], references: [id])
+  pictureId Int
+  jobs      Job[]    @relation(references: [id])
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Bid {
+  id          Int      @default(autoincrement()) @id
+  amount      Int
+  timeflame   Int
+  message     String
+  attachments File[]
+  order       Order
+  state       State    @default(PENDING)
+  job         Job      @relation(fields: [jobId], references: [id])
+  jobId       Int
+  author      User     @relation(fields: [userId], references: [id])
+  userId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Job {
+  id          Int         @default(autoincrement()) @id
+  title       String
+  timeflame   Int
+  body        String
+  attachments File[]
+  expertise   Expertise[] @relation(references: [id])
+  author      User        @relation(fields: [userId], references: [id])
+  userId      Int
+  Bids        Bid[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model File {
+  id        Int         @default(autoincrement()) @id
+  path      String      @unique
+  filename  String
+  mimetype  String
+  encoding  String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  User      User[]
+  Expertise Expertise[]
+  Bid       Bid?        @relation(fields: [bidId], references: [id])
+  bidId     Int?
+  Job       Job?        @relation(fields: [jobId], references: [id])
+  jobId     Int?
+  Message   Message?    @relation(fields: [messageId], references: [id])
+  messageId Int?
+}
+
+model Chat {
+  id        Int       @default(autoincrement()) @id
+  subject   String
+  published Boolean   @default(false)
+  author    User      @relation(name: "chat_author", fields: [authorId], references: [id])
+  authorId  Int
+  members   User[]
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Message {
+  id          Int       @default(autoincrement()) @id
+  published   Boolean   @default(false)
+  isReply     Boolean   @default(false)
+  body        String
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    Int
+  replies     Message[]
+  attachments File[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Chat        Chat?     @relation(fields: [chatId], references: [id])
+  chatId      Int?
+  Message     Message?  @relation("MessageToMessage", fields: [messageId], references: [id])
+  messageId   Int?
+}
+
+model Order {
+  id        Int      @default(autoincrement()) @id
+  item      Bid      @relation(fields: [itemId], references: [id])
+  itemId    Int
+  tokens    Int      @default(0)
+  state     State    @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TokenOrder {
+  id            Int         @default(autoincrement()) @id
+  owner         User        @relation(fields: [ownerId], references: [id])
+  ownerId       Int
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  transactionId Int
+  tokens        Int         @default(0)
+  state         State       @default(PENDING)
+  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime    @default(now())
+}
+
+model Transaction {
+  id                 Int        @default(autoincrement()) @id
+  state              State      @default(PENDING)
+  externalTransRefId String     @unique
+  transRefId         String     @unique
+  amount             Float
+  updatedAt          DateTime   @updatedAt
+  createdAt          DateTime   @default(now())
+  TokenOrder         TokenOrder
+}
+
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+  ORGANIZATION
+}
+
+enum State {
+  PENDING
+  REVIEW
+  REJECTED
+  APPROVED
+  COMPLETED
+  ARCHIVED
+}
